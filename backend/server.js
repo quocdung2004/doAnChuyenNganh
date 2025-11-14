@@ -2,21 +2,38 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const morgan = require('morgan');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 const connectDB = require('./config/db');
 
+// Load env variables
 dotenv.config();
 connectDB();
 
 const app = express();
 
-// Middlewares
-app.use(express.json());
-app.use(cors());
-app.use(morgan('dev'));
+// ===== MIDDLEWARES =====
+app.use(express.json()); // parse JSON
+app.use(cors());         // enable CORS
+app.use(morgan('dev'));  // logging
+app.use(helmet());       // bảo mật headers
 
-// Routes
+// ===== ROUTES =====
 app.use('/api/users', require('./routes/userRoutes'));
 
-// Start server
+// ===== 404 - route không tồn tại =====
+app.use((req, res, next) => {
+  res.status(404).json({ message: "Route không tồn tại" });
+});
+
+// ===== Error handling middleware =====
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: "Server lỗi", error: err.message });
+});
+
+// ===== START SERVER =====
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
