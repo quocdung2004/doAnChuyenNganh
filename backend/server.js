@@ -9,7 +9,6 @@ const beNuoiRoutes = require('./routes/BeNuoiRoutes');
 const MoiTruong = require('./routes/MoiTruongRoutes');
 const NhatKyChi = require('./routes/NhatKyChiRoutes');
 const SucKhoe = require('./routes/SucKhoeRoutes');
-const TaiChinh = require('./routes/TaiChinhRoutes');
 const NhatKyThu = require('./routes/NhatKyThuRoutes');
 // Load env variables
 dotenv.config();
@@ -30,7 +29,6 @@ app.use('/api/MoiTruong', MoiTruong);
 app.use('/api/NhatKyChi', NhatKyChi);
 app.use('/api/NhatKyThu', NhatKyThu);
 app.use('/api/SucKhoe', SucKhoe);
-app.use('/api/TaiChinh', TaiChinh);
 
 // ===== 404 - route không tồn tại =====
 app.use((req, res, next) => {
